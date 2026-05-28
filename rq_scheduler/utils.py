@@ -23,11 +23,11 @@ def to_unix(dt):
 def get_next_scheduled_time(cron_string, use_local_timezone=False):
     """Calculate the next scheduled time by creating a crontab object
     with a cron string"""
-    now = datetime.now()
+    tz = dateutil.tz.tzlocal() if use_local_timezone else dateutil.tz.UTC
+    now = datetime.now(tz)
     cron = crontab.CronTab(cron_string)
     next_time = cron.next(now=now, return_datetime=True)
-    tz = dateutil.tz.tzlocal() if use_local_timezone else dateutil.tz.UTC
-    return next_time.astimezone(tz)
+    return next_time
 
 
 def setup_loghandlers(level='INFO'):
